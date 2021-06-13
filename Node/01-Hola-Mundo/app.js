@@ -1,5 +1,2 @@
-
-let nombre = "Stephanie";
-
-console.log(nombre);
+console.log("Hola mundo =) ");
 
