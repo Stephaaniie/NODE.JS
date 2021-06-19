@@ -1,3 +1,14 @@
+//ejemplo de estructuras no bloqueantes 
+/*
+* El orden de ejecucion es:
+    Inincio de programa 
+    Fin de programa 
+    Segundo timeout
+    Tercer timeout
+    Primer timeout
+
+*/
+
 console.log('Inicio de programa');
 
 setTimeout(()=>{
