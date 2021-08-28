@@ -1,0 +1,20 @@
+{
+  "name": "NODE.JS",
+  "version": "1.0.0",
+  "description": "Permite que js se pueda ejecutar desde el servidor y no unicamente desde la maquina del cliente, convirtiendolo en:",
+  "main": "app-blocking.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Stephaaniie/NODE.JS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Stephaaniie/NODE.JS/issues"
+  },
+  "homepage": "https://github.com/Stephaaniie/NODE.JS#readme"
+}
