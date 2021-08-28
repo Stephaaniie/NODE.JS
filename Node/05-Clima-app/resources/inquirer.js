@@ -8,7 +8,7 @@ require('dotenv').config()
 
 const {LEER_DB} = require('./resources/guardarArchivo');
 
-const Tareas = require('./models/listaTarea');
+const TAREA = require('./models/listaTarea');
 
 const TAREAS = new Tareas();
 
@@ -82,71 +82,60 @@ const LEER_INPUT = async( message ) => {
     return desc;
 }
 
-const LISTADO_TAREAS_BORRAR = async( tareas = [] ) => {
-    const CHOICES = tareas.map( (tarea, i) => {
-        let idx = `${i + 1}.`.green;
+const LISTAR_LUGARES = async( lugares = [] ) => {
+    const CHOICES = lugares.map( (lugar, i) => {
+        const IDX = `${i + 1}.`.green;
         return {
-            value: tarea.id,
-            name:  `${ idx } ${ tarea.desc }`
+            value: lugar.id,
+            name:  `${ IDX } ${ lugar.nombre }`
         }
     });
     CHOICES.unshift({
         value: '0',
         name: '0.'.green + ' Cancelar'
     });
-    const PREGUNTAS = [
-        {
-            type: 'list',
-            name: 'id',
-            message: 'Borrar',
-            CHOICES
-        }
-    ]
-    let { id } = await inquirer.prompt(PREGUNTAS);
+    const PREGUNTAS = [{
+        type: 'list',
+        name: 'id',
+        message: 'Seleccione lugar:',
+        CHOICES
+    }]
+    const { id } = await inquirer.prompt(PREGUNTAS);
     return id;
 }
 
 const CONFIRMAR = async(message) => {
-    const question = [
-        {
-            type: 'confirm',
-            name: 'ok',
-            message
-        }
-    ];
-    const { ok } = await inquirer.prompt(question);
+    const QUESTION = [{
+        type: 'confirm',
+        name: 'ok',
+        message
+    }];
+    const { ok } = await inquirer.prompt(QUESTION);
     return ok;
 }   
 
 const MOSTRAR_LISTADO_CHECK_LIST = async( tareas = [] ) => {
     const CHOICES = tareas.map( (tarea, i) => {
-        let idx = `${i + 1}.`.green;
+        const IDX = `${i + 1}.`.green;
         return {
             value: tarea.id,
-            name:  `${ idx } ${ tarea.desc }`,
+            name:  `${ IDX } ${ tarea.desc }`,
             checked: ( tarea.completadoEn ) ? true : false
         }
     });
-    const PREGUNTA = [
-        {
-            type: 'checkbox',
-            name: 'ids',
-            message: 'Selecciones',
-            CHOICES
-        }
-    ]
-    let { ids } = await inquirer.prompt(PREGUNTA);
-    return ids;
+    const PREGUNTA = [{
+        type: 'checkbox',
+        name: 'ids',
+        message: 'Selecciones',
+        CHOICES
+    }]
+    const { IDS } = await inquirer.prompt(PREGUNTA);
+    return IDS;
 }
 
 const REALIZAR_OPERACION = async () => {
-    let opt = '';
-    let tareasDB = LEER_DB();
     let busqueda = new BUSQUEDA();
-
-    if ( tareasDB ) { 
-        TAREAS.cargarTareasFromArray( tareasDB );
-    }
+    let opt;
     do {
         opt = await INQUIRER_MENU();
         switch (opt) {
@@ -154,13 +143,31 @@ const REALIZAR_OPERACION = async () => {
                 let ciudadABuscar = await LEER_INPUT('Ciudad::');
                 busqueda.ciudad(ciudadABuscar);
                 TAREAS.crearTarea( desc );
+                const TERMINO = await leerInput('Ciudad: ');
+                const LUGARES = await busqueda.ciudad( TERMINO );
+                const ID = await listarLugares(LUGARES);
+                if ( ID === '0' ) continue;
+                const LUGAR_SEL = LUGARES.find( l => l.id === ID );
+                busqueda.agregarHistorial( LUGAR_SEL.nombre );
+                const CLIMA = await busqueda.climaLugar( LUGAR_SEL.lat, LUGAR_SEL.lng );
+
+                console.clear();
+                console.log('\nInformación de la ciudad\n'.green);
+                console.log('Ciudad:', LUGAR_SEL.nombre.green );
+                console.log('Lat:', LUGAR_SEL.lat );
+                console.log('Lng:', LUGAR_SEL.lng );
+                console.log('Temperatura:', CLIMA.temp );
+                console.log('Mínima:', CLIMA.min );
+                console.log('Máxima:', CLIMA.max );
+                console.log('Como está el clima:',  CLIMA.desc.green );
             break;
             case HISTORIAL_DE_BUSQUEDA:
                 TAREAS.listadoCompleto();
             break;
         }
-        GUARDAR_DB( TAREAS.listadoArr );
-        await PAUSA();
+        if (opt !== 0) {
+            await PAUSA();
+        }
     } while( opt !== OPCION_TERMINAR );
 };
 
