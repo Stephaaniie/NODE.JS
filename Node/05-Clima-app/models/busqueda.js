@@ -7,17 +7,14 @@ const MAXIMA_LIMIT = 5;
 const PRIMER_INDICE = 0;
 
 class Busqueda {
-
     historial = [];
-
     dbPath = './db/database.json';
-    
+
     constructor(){
         this.leerDB();
     }
 
     get historialCapitalizado() {
-
         return this.historial.map(lugar => {
             let palabras = lugar.historialCapitalizado(' ');
             palabras = palabras.map( p => p[PRIMER_INDICE].toUpperCase() + p.substring(1));
@@ -42,7 +39,6 @@ class Busqueda {
     }
 
     async ciudad(lugar = '') {
-
         try {
             const INSTANCE = AXIOS.create({
                 BASE_URL: `https://api.mapbox.com/geocoding/v5/mapbox.places/${ lugar }.json?`,
@@ -82,7 +78,6 @@ class Busqueda {
     }
 
     agregarHistorial( lugar = '' ) {
-
         if( this.historial.includes( lugar.toLocaleLowerCase() ) ){
             return;
         }
@@ -97,12 +92,12 @@ class Busqueda {
         const PAYLOAD = {
             historial: this.historial
         };
-        fs.writeFileSync( this.dbPath, JSON.stringify( PAYLOAD ) );
+        FS.writeFileSync( this.dbPath, JSON.stringify( PAYLOAD ) );
     }
 
     leerDB() {
-        if( !fs.existsSync( this.dbPath ) ) return;
-        const INFO = fs.readFileSync( this.dbPath, { encoding: 'utf-8' });
+        if( !FS.existsSync( this.dbPath ) ) return;
+        const INFO = FS.readFileSync( this.dbPath, { encoding: 'utf-8' });
         const DATA = JSON.parse( INFO );
 
         this.historial = DATA.historial;
