@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Stephaaniie/NODE.JS/issues"
   },
-  "homepage": "https://github.com/Stephaaniie/NODE.JS#readme"
+  "homepage": "https://github.com/Stephaaniie/NODE.JS#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0"
+  }
 }

@@ -8,10 +8,21 @@ class Busqueda {
 
     }
 
+    get paramsMapbox() {
+        return{
+            'access_token' :  '',
+            'limit' : 5,
+            'lenguage' : 'es'
+        }
+    }
+
     async ciudad(lugar = ''){
 
-       // console.log(lugar);
-        const RESP = await AXIOS.get('https://api.mapbox.com/geocoding/v5/mapbox.places/-58.3778060483437%2C-34.60086615658818.json?access_token=pk.eyJ1Ijoic2NlbGkiLCJhIjoiY2tzdjIycGJyMWxiaTJvbzM1dmlpMGV3diJ9.GXGFAfNRE7Jr5V9IetYdaQ');
+        const INSTANCE = AXIOS.create({
+            BASE_URL: `https://api.mapbox.com/geocoding/v5/mapbox.places/${ lugar }.json?`,
+            PARAMS : this.paramsMapbox
+        })
+        const RESP = await  INSTANCE.get();
         return[];
     }
 }

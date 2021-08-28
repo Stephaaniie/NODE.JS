@@ -4,6 +4,8 @@ const BUSQUEDA = require('./models/busqueda');
 
 require('colors');
 
+require('dotenv').config()
+
 const {LEER_DB} = require('./resources/guardarArchivo');
 
 const Tareas = require('./models/listaTarea');
