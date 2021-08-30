@@ -6,7 +6,7 @@ const USUARIO = require('../models/user');
 
 const BCRYPTS = require('../models/user');
 
-const LOGIN = (req, res = response) => {
+const LOGIN = async(req, res = response) => {
     const {correo, contrasenia} = req.BODY;
     try {
         const usuario = await USUARIO.findOne({correo});
@@ -40,7 +40,7 @@ const LOGIN = (req, res = response) => {
     
 }
 
-const GOOGLE_SINGIN = (req, res = response) => {
+const GOOGLE_SINGIN = async (req, res = response) => {
     const {id_token} = req.BODY;
     try {
         const {correo, nombre, img} = await GOOGLE_VERIFY(id_token);

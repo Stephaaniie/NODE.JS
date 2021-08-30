@@ -1,6 +1,6 @@
 const MONGOOSE = require('mongoose');
 
-const dbConnection = async() => {
+const DB_CONECTION = async() => {
     try {
         await MONGOOSE.connect( process.env.MONGO, {
             useNewUrlParser: true,
@@ -16,5 +16,5 @@ const dbConnection = async() => {
 }
 
 module.exports = {
-    dbConnection
+    DB_CONECTION
 }

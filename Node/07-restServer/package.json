@@ -15,9 +15,11 @@
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "express-validator": "^6.12.1",
     "google-auth-library": "^7.6.2",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.1.1",
-    "mongoose": "^5.11.15"
+    "mongoose": "^5.11.15",
+    "path-to-regexp": "^6.2.0"
   }
 }

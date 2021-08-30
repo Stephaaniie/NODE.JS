@@ -1,7 +1,7 @@
 const JWT = require('jsonwebtoken');
 const user = require('../models/user');
 
-const GENERAR_JWT = (userId = '') => {
+const GENERAR_JWT = async (userId = '') => {
     return new Promise ((resolve, reject) =>{
         const PAYLOAD = {userId};
         JWT.sign(PAYLOAD,process.env.SECRETO_PRIVADO_TOKEN, {
@@ -14,7 +14,7 @@ const GENERAR_JWT = (userId = '') => {
                 resolve(token);
             }
         })
-    })
+    });
 }
 
 module.exports = {

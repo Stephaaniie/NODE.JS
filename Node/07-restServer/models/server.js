@@ -27,14 +27,14 @@ class Server {
     }
 
     routes() {
-        this.app.use(this.uuthPath,require('../routes/auth'));
+        this.app.use(this.authPath,require('../routes/auth'));
         this.app.use(this.usuariosPath,require('../routes/user'));
     }
 
     listen() {
         this.app.listen( this.port, () => {
             console.log('Servidor corriendo en puerto',this.port);
-        })
+        });
     }
 }
 
