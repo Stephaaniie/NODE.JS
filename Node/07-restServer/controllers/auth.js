@@ -1,5 +1,6 @@
 const {response} = require('express');
 const { GENERAR_JWT } = require('../helpers/generarJWT');
+const { GOOGLE_VERIFY } = require('../helpers/googleVerify');
 
 const USUARIO = require('../models/user');
 
@@ -39,6 +40,41 @@ const LOGIN = (req, res = response) => {
     
 }
 
+const GOOGLE_SINGIN = (req, res = response) => {
+    const {id_token} = req.BODY;
+    try {
+        const {correo, nombre, img} = await GOOGLE_VERIFY(id_token);
+        let usuario = await USUARIO.findOne({correo})
+       
+        if (!usuario) {
+            const DATA = {
+                nombre,
+                correo,
+                contrasenia
+            }
+            usuario = new USUARIO(DATA);
+            await usuario.save();
+        }
+
+        if (usuario.estado) {
+            return res.status(401).json({
+                msg: 'Hable con el admin, usuario bloqueado'
+            });
+        }
+        const TOKEN = await GENERAR_JWT(usuario.id);
+        res.json({
+            usuario,
+            TOKEN
+        });
+        
+    } catch (error) {
+        res.status(400).json({
+            msg: 'El token no es reconocido',
+        });
+    }
+}
+
 module.exports = {
-    LOGIN
+    LOGIN,
+    GOOGLE_SINGIN
 }
