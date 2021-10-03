@@ -30,11 +30,10 @@ ROUTER.post('/',[
 
 ROUTER.delete('/:id',[
     validarJWT,
-    //tieneRole('ADMIN_ROLE'),
+    //tieneRole('ADMIN_ROLE', 'VENTAR_ROLE','OTRO_ROLE'),
     check('id', 'No es un ID válido').isMongoId(),
     check('id').custom( existeUsuarioPorId ),
     validarCampos
 ], USUARIOS_DELETE);
-
 
 module.exports = ROUTER;
