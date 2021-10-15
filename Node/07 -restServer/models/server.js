@@ -31,7 +31,8 @@ class Server {
         this.app.use( EXPRESS.static('public') );
         this.app.use(fileUpload({
             useTempFiles: true,
-            tempFileDir: '/tmp/'
+            tempFileDir: '/tmp/',
+            createParentPath: true
         }));
     }
     routes() {
