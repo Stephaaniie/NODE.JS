@@ -36,10 +36,18 @@ const EXISTE_PRODUCTO_POR_ID = async( id ) => {
     }
 }
 
+const COLECCIONES_PERMITIDAS = (coleccion='', colecciones = [])=>{
+    const INCLUIDAS = colecciones.includes(coleccion);
+    if(!INCLUIDAS){
+        throw new Error(`La coleccion ${coleccion} no es permitida, ${colecciones}`);
+    }
+}
+
 module.exports = {
     ES_ROLE_VALIDO,
     EMAIL_EXISTE,
     EXISTE_USUARIO_POR_ID,
     EXISTE_PRODUCTO_POR_ID,
-    EXISTE_CATEGORIA_POR_ID
+    EXISTE_CATEGORIA_POR_ID,
+    COLECCIONES_PERMITIDAS
 }
