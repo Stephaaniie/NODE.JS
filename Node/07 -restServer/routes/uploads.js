@@ -2,7 +2,7 @@ const { ROUTER_EXPRESS } = require('express');
 
 const { CHECK } = require('express-validator');
 
-const { CARGAR_ARCHIVO, ACTUALIZAR_IMAGEN } = require('../controllers/uploads');
+const { CARGAR_ARCHIVO, ACTUALIZAR_IMAGEN_CLOUDINARY } = require('../controllers/uploads');
 
 const { VALIDAR_CAMPOS, VALIDAR_ARCHIVO_SUBIR } = require('../middlewares');
 
@@ -17,6 +17,6 @@ ROUTER.put('/:coleccion/:id',[
     CHECK('id','El id debe de ser de mongo').isMongoId(),
     CHECK('coleccion').custom( c => COLECCIONES_PERMITIDAS(c, ['usuarios','productos'])),
     VALIDAR_CAMPOS,
-], ACTUALIZAR_IMAGEN);
+], ACTUALIZAR_IMAGEN_CLOUDINARY);
 
 module.exports = ROUTER;

@@ -24,7 +24,7 @@ const CARGAR_ARCHIVO = async(req, res = RESPONSE) =>{
   }
 }
 
-const ACTUALIZAR_IMAGEN = async(req, res = response) =>{
+const ACTUALIZAR_IMAGEN_CLOUDINARY = async(req, res = response) =>{
   const{id, colection} = req.params;
   let modelo = '';
   switch (coleccion) {
@@ -48,19 +48,19 @@ const ACTUALIZAR_IMAGEN = async(req, res = response) =>{
       return res.status(500).json({ msg: 'Se me olvido validar'});
   }
   if (modelo.img) {
-    const PATH_IMAGEN = PATH.join(__dirname,'../uploads', coleccion, modelo.img);
-    if (FILE_SYSTEM.existsSync(PATH_IMAGEN)) {
-      FILE_SYSTEM.unlinkSync(PATH_IMAGEN);  
-    }
+    const NOMBRE_ARREGLO = modelo.img.split('/');
+    const NOMBRE = NOMBRE_ARREGLO[NOMBRE_ARREGLO.length -1];
+    const PUBLIC_ID = NOMBRE.split('.');
+    CLOUDINARY.uploader.destroy(PUBLIC_ID);
   }
-  const NOMBRE = await subirArchivo(req.file, undefined, coleccion);
-  modelo.img = NOMBRE;
+  const {TEMP_FILE_PATH} = req.file.subirArchivo;
+  const {SECURE_URL} = await CLOUDINARY.uploader.upload(TEMP_FILE_PATH);
+  modelo.img = SECURE_URL;
   await modelo.save();
   res.json({modelo})
 }
 
-
 module.exports = {
   CARGAR_ARCHIVO,
-  ACTUALIZAR_IMAGEN
+  ACTUALIZAR_IMAGEN_CLOUDINARY
 }
